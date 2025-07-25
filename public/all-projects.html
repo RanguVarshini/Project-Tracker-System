@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Projects</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #e0f7fa);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 95%;
+      margin: 2rem auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      display: block;
+      margin: 0 auto 1.5rem auto;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background-color: #00acc1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00838f;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow-x: auto;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: #f1f1f1;
+      color: #333;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    @media screen and (max-width: 768px) {
+      table {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>All Projects</h1>
+    <button onclick="window.location.href='index.html'">Back</button>
+    <table id="projectsTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Year</th>
+          <th>Role</th>
+          <th>Other Role</th>
+          <th>Type</th>
+          <th>Duration</th>
+          <th>Amount</th>
+          <th>Agency</th>
+          <th>Status</th>
+          <th>Proof</th>
+          <th>Amount Released</th>
+          <th>Amount Spent</th>
+          <th>Certificate</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    fetch("/projects")
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector("#projectsTable tbody");
+        data.forEach(project => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${project.id}</td>
+            <td>${project.title}</td>
+            <td>${project.year}</td>
+            <td>${project.role}</td>
+            <td>${project.otherRole}</td>
+            <td>${project.projectType}</td>
+            <td>${project.duration}</td>
+            <td>${project.amount}</td>
+            <td>${project.agency}</td>
+            <td>${project.status}</td>
+            <td>${project.uploadProof}</td>
+            <td>${project.amountReleased}</td>
+            <td>${project.amountSpent}</td>
+            <td>${project.uploadCertificate}</td>`;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => console.error("Error fetching projects:", error));
+  </script>
+</body>
+</html>

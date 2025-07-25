@@ -1,0 +1,52 @@
+.container {
+    background-color: #ffffff;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-top: 1rem;
+    display: block;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.6rem;
+    margin: 0.3rem 0 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  button {
+    background-color: #0288d1;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #026aa7;
+  }
+  
+  #message {
+    color: red;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  

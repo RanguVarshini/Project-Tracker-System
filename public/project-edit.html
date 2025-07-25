@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Project</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+
+    input, select, button {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Edit Project</h1>
+
+  <label for="projectId">Enter Project ID to Edit:</label>
+  <input type="number" id="projectId" placeholder="Project ID" />
+  <button onclick="loadProject()">Load Project</button>
+  <button onclick="window.location.href='index.html'" style="margin-bottom: 1rem;">Back to Home</button>
+
+  <form id="editForm" style="display: none;" enctype="multipart/form-data">
+    <input type="hidden" name="id" id="id" required>
+    <input type="text" name="title" id="title" placeholder="Title">
+
+    <!-- Year using date input -->
+    <input type="date" name="year" id="year" placeholder="Year">
+
+    <!-- Role dropdown -->
+    <select name="role" id="role">
+      <option value="">Select Role</option>
+      <option value="student">Student</option>
+      <option value="pi">PI</option>
+      <option value="co-pi">Co-PI</option>
+    </select>
+
+    <input type="text" name="otherRole" id="otherRole" placeholder="Other Role">
+    <input type="text" name="projectType" id="projectType" placeholder="Type">
+    <input type="text" name="duration" id="duration" placeholder="Duration">
+    <input type="number" name="amount" id="amount" placeholder="Amount">
+    <input type="text" name="agency" id="agency" placeholder="Agency">
+
+    <!-- Status dropdown -->
+    <select name="status" id="status" onchange="handleStatusChange()">
+      <option value="">Select Status</option>
+      <option value="applied">Applied</option>
+      <option value="on-going">On-going</option>
+      <option value="completed">Completed</option>
+    </select>
+
+    <!-- File inputs -->
+    <input type="file" name="uploadProof" id="uploadProof">
+    <input type="number" name="amountReleased" id="amountReleased" placeholder="Amount Released">
+    <input type="number" name="amountSpent" id="amountSpent" placeholder="Amount Spent">
+    <input type="file" name="uploadCertificate" id="uploadCertificate">
+
+    <button type="submit">Update Project</button>
+  </form>
+
+  <p id="message" style="color: red;"></p>
+
+  <script>
+    function loadProject() {
+      const projectId = document.getElementById('projectId').value;
+      fetch(`/projects/${projectId}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Project not found');
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('editForm').style.display = 'block';
+          document.getElementById('id').value = data.id;
+          document.getElementById('title').value = data.title;
+          document.getElementById('year').value = new Date(data.year).toISOString().split('T')[0];
+          document.getElementById('role').value = data.role;
+          document.getElementById('otherRole').value = data.otherRole;
+          document.getElementById('projectType').value = data.projectType;
+          document.getElementById('duration').value = data.duration;
+          document.getElementById('amount').value = data.amount;
+          document.getElementById('agency').value = data.agency;
+          document.getElementById('status').value = data.status;
+          document.getElementById('amountReleased').value = data.amountReleased;
+          document.getElementById('amountSpent').value = data.amountSpent;
+          document.getElementById('message').textContent = '';
+          handleStatusChange(); // trigger conditional logic
+        })
+        .catch(err => {
+          document.getElementById('editForm').style.display = 'none';
+          document.getElementById('message').textContent = err.message;
+        });
+    }
+
+    function handleStatusChange() {
+      const status = document.getElementById('status').value;
+      const proof = document.getElementById('uploadProof');
+      const amountReleased = document.getElementById('amountReleased');
+      const amountSpent = document.getElementById('amountSpent');
+      const cert = document.getElementById('uploadCertificate');
+
+      if (status === 'applied') {
+        proof.disabled = true;
+        amountReleased.disabled = true;
+        amountSpent.disabled = true;
+        cert.disabled = true;
+      } else if (status === 'on-going') {
+        proof.disabled = false;
+        amountReleased.disabled = false;
+        amountSpent.disabled = false;
+        cert.disabled = true;
+      } else if (status === 'completed') {
+        proof.disabled = true;
+        amountReleased.disabled = true;
+        amountSpent.disabled = true;
+        cert.disabled = false;
+      } else {
+        proof.disabled = false;
+        amountReleased.disabled = false;
+        amountSpent.disabled = false;
+        cert.disabled = false;
+      }
+    }
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = document.getElementById('id').value;
+
+      // Form data object to handle file uploads
+      const formData = new FormData(this);
+
+      fetch(`/projects/${id}`, {
+        method: 'PUT',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message || 'Project updated!');
+        })
+        .catch(err => {
+          alert('Error updating project: ' + err.message);
+        });
+    });
+  </script>
+</body>
+</html>

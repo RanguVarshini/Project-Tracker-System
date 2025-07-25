@@ -1,0 +1,66 @@
+<!DOCTYPE html> <html lang="en"> 
+  <head> 
+    <meta charset="UTF-8" /> 
+    <title>Add New Project</title> 
+    <style> 
+    body { 
+      font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #e0f7fa, #f8bbd0); padding: 2rem; 
+    } 
+      .container { 
+        max-width: 700px; margin: auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+        } 
+        input, select, button { 
+          padding: 0.6rem; font-size: 1rem; margin-bottom: 1rem; width: 100%; 
+        } button { background-color: #0288d1; color: white; border: none; border-radius: 6px; cursor: pointer; } button:hover { background-color: #0277bd; } </style> 
+        </head> 
+        <body> 
+          <div class="container"> 
+            <h1>Add New Project</h1> 
+            <form action="/add-project" method="POST" enctype="multipart/form-data"> 
+              <input type="text" name="title" placeholder="Title" required /> <input type="date" name="year" required />
+  <select name="role" required>
+    <option value="">Select Role</option>
+    <option value="student">Other</option>
+    <option value="pi">PI</option>
+    <option value="co-pi">Co-PI</option>
+  </select>
+
+  <input type="text" name="otherRole" placeholder="Other Role" />
+  <input type="text" name="projectType" placeholder="Type" />
+  <input type="text" name="duration" placeholder="Duration" />
+  <input type="number" name="amount" placeholder="Amount" />
+  <input type="text" name="agency" placeholder="Agency" />
+
+  <select name="status" id="status" onchange="handleStatusChange()" required>
+    <option value="">Select Status</option>
+    <option value="applied">Applied</option>
+    <option value="on-going">On-going</option>
+    <option value="completed">Completed</option>
+  </select>
+  
+  <h1 style="font-size: 20px; font-weight: normal;">Upload Proof</h1>
+
+
+  <input type="file" name="uploadProof" id="uploadProof" />
+  <input type="number" name="amountReleased" id="amountReleased" placeholder="Amount Released" />
+  <input type="number" name="amountSpent" id="amountSpent" placeholder="Amount Spent" />
+  
+  <h1 style="font-size: 20px; font-weight: normal;">Upload Certificate</h1>
+
+
+  <input type="file" name="uploadCertificate" id="uploadCertificate" />
+
+  <button type="submit">Add Project</button>
+  <button class="back-button" onclick="window.location.href='index.html'">Back to Home</button>
+</form>
+</div> <script> 
+function handleStatusChange() { 
+  const status = document.getElementById('status').value; 
+  const proof = document.getElementById('uploadProof'); 
+  const amountReleased = document.getElementById('amountReleased'); 
+  const amountSpent = document.getElementById('amountSpent'); 
+  const certificate = document.getElementById('uploadCertificate'); 
+  if (status === 'applied') { proof.disabled = true; amountReleased.disabled = true; amountSpent.disabled = true; certificate.disabled = true; } else if (status === 'on-going') { proof.disabled = false; 
+  amountReleased.disabled = false; amountSpent.disabled = false; certificate.disabled = true; } else if (status === 'completed') { proof.disabled = true; 
+  amountReleased.disabled = true; amountSpent.disabled = true; certificate.disabled = false; } else { proof.disabled = false; amountReleased.disabled = false; amountSpent.disabled = false; certificate.disabled = false; } } 
+  </script> </body> </html>
